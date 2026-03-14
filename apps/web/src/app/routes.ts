@@ -8,7 +8,12 @@ export const publicRoutes = [
   '/contact',
   '/policies',
   '/booking',
-  '/manage-booking'
+  '/manage-booking',
+  '/booking/results',
+  '/booking/quote',
+  '/booking/guest-details',
+  '/booking/checkout',
+  '/booking/confirmation'
 ] as const;
 
 export const hasPublicRoute = (pathname: string): boolean => {
