@@ -1,0 +1,14 @@
+{
+  "files": [],
+  "references": [
+    { "path": "packages/types" },
+    { "path": "packages/config" },
+    { "path": "packages/db" },
+    { "path": "packages/booking-core" },
+    { "path": "packages/channel-core" },
+    { "path": "packages/ui" },
+    { "path": "apps/cms" },
+    { "path": "apps/web" },
+    { "path": "apps/worker" }
+  ]
+}

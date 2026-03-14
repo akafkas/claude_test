@@ -3,22 +3,27 @@
 ## 1) Product definition
 
 ### Product name
+
 White-label multi-tenant hospitality booking platform
 
 ### Goal
+
 Build an MVP that lets NOUS launch branded websites for hospitality businesses with:
+
 - Modern marketing site
 - Direct booking engine
 - CMS/admin panel
 - OTA sync capability via a common channel layer
 
 ### Target customers
+
 - Boutique hotels
 - Villas / apartments
 - Small property managers
 - Small charter businesses (later, not in MVP)
 
 ### Core value
+
 - Replace outdated websites
 - Increase direct bookings
 - Reduce dependency on third-party booking engines
@@ -30,6 +35,7 @@ Build an MVP that lets NOUS launch branded websites for hospitality businesses w
 ## 2) MVP scope
 
 ### In scope
+
 - Multi-tenant architecture
 - White-label property websites
 - Payload CMS-based admin
@@ -47,6 +53,7 @@ Build an MVP that lets NOUS launch branded websites for hospitality businesses w
 - Basic analytics dashboard
 
 ### Out of scope
+
 - Full PMS
 - Housekeeping
 - Accounting
@@ -63,11 +70,13 @@ Build an MVP that lets NOUS launch branded websites for hospitality businesses w
 ## 3) Business requirements
 
 ### Tenant types
+
 - NOUS super admin
 - Property owner / manager
 - Property staff
 
 ### Required capabilities
+
 - Create a new property tenant
 - Assign branded domain
 - Configure rooms, rates, policies, offers
@@ -78,6 +87,7 @@ Build an MVP that lets NOUS launch branded websites for hospitality businesses w
 - View sync issues and retry failed jobs
 
 ### Success criteria
+
 - Property can go live in under one day after onboarding
 - Guest can complete booking on mobile in a few steps
 - No double booking in normal operation
@@ -88,12 +98,14 @@ Build an MVP that lets NOUS launch branded websites for hospitality businesses w
 ## 4) Architecture and stack
 
 ### Components
+
 1. **Frontend app** (Next.js + React): public sites, booking UI, guest self-service
 2. **Core backend** (Payload CMS on Node.js): CMS, auth, admin, booking logic, tenancy, APIs
 3. **Worker service** (Node.js): async jobs, OTA sync, emails, retries, schedules
 4. **Data and infrastructure**: PostgreSQL, Redis, S3-compatible object storage, Stripe, email provider, monitoring/logging
 
 ### Runtime split
+
 - `apps/web` → frontend
 - `apps/cms` → Payload app
 - `apps/worker` → background jobs
@@ -104,9 +116,11 @@ Build an MVP that lets NOUS launch branded websites for hospitality businesses w
 ## 5) Multi-tenant design
 
 ### Tenant model
+
 Each property belongs to an organization. All operational records are tenant-scoped.
 
 ### Core tenancy entities
+
 - Organization
 - Property
 - User
@@ -114,12 +128,16 @@ Each property belongs to an organization. All operational records are tenant-sco
 - Role
 
 ### Tenant isolation rule
+
 All admin/API queries must filter by:
+
 - `organizationId`
 - `propertyId` where applicable
 
 ### Domain model constraints
+
 Each property can have:
+
 - One custom domain
 - One fallback subdomain
 - One theme config
@@ -130,12 +148,14 @@ Each property can have:
 ## 6) Functional modules
 
 ### Booking engine modules
+
 - **Availability engine**: sellable inventory, restrictions, holds, occupancy filtering
 - **Pricing engine**: seasonal pricing, occupancy rules, promos, taxes/fees, breakdowns
 - **Reservation engine**: create holds, confirm bookings, release holds, audit logs, queue sync jobs
 - **Payment engine**: create/confirm Stripe payment intents, update booking payment state
 
 ### Channel sync modules
+
 - Channel account management
 - Channel mapping management
 - Push/pull sync jobs
@@ -147,6 +167,7 @@ Each property can have:
 ## 7) Booking lifecycle
 
 ### Direct booking flow
+
 1. Guest searches
 2. System computes availability and price
 3. Guest selects room/rate
@@ -160,6 +181,7 @@ Each property can have:
 11. Confirmation email sent
 
 ### OTA flow
+
 1. Webhook/polling receives reservation update
 2. Adapter normalizes payload
 3. Internal booking created/updated idempotently
@@ -172,6 +194,7 @@ Each property can have:
 ## 8) Double-booking prevention requirements
 
 Required controls:
+
 - DB transaction for booking confirmation
 - Row-level locking for inventory writes
 - Redis lock per property/date-range during confirm flow
@@ -180,6 +203,7 @@ Required controls:
 - Retry-safe job design
 
 Inventory update strategy per confirmation:
+
 - Lock affected availability rows
 - Verify `availableUnits > 0`
 - Increment `bookedUnits`
@@ -192,12 +216,14 @@ Inventory update strategy per confirmation:
 ## 9) Access control and security
 
 ### Roles
+
 - **Super admin**: full platform access
 - **Property admin**: full org/property access, no platform settings
 - **Staff**: booking/content ops with limits, no credentials/billing
 - **Public**: published content + public booking endpoints only
 
 ### Security baseline
+
 - Strict tenant-scoped access
 - Encrypted secrets and channel credentials
 - Webhook signature validation
@@ -209,18 +235,21 @@ Inventory update strategy per confirmation:
 ## 10) Non-functional requirements
 
 ### Performance
+
 - Lighthouse-friendly public pages
 - Fast booking search UX
 - CMS content caching
 - Smart SSR/ISR
 
 ### Reliability
+
 - Background retries with backoff
 - Dead-letter queue for failed sync jobs
 - Structured logging
 - Health checks
 
 ### Observability
+
 - Error tracking
 - Request logs
 - Job metrics
@@ -243,6 +272,7 @@ Inventory update strategy per confirmation:
 ## 12) MVP definition of done
 
 MVP is complete when NOUS can:
+
 - Create a property tenant
 - Manage property content in Payload
 - Publish branded site on custom domain

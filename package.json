@@ -1,0 +1,19 @@
+{
+  "name": "nous-hospitality-platform",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "tsc -b tsconfig.workspaces.json",
+    "dev": "npm run build -- --watch",
+    "lint": "eslint . --ext .js,.mjs,.cjs && tsc --noEmit -p tsconfig.workspaces.json",
+    "test": "npm run test:smoke && node --test tests/**/*.test.mjs",
+    "test:smoke": "npm run build",
+    "format": "prettier --check .",
+    "format:write": "prettier --write .",
+    "clean": "find . -name dist -type d -prune -exec rm -rf {} + && find . -name tsconfig.tsbuildinfo -delete"
+  }
+}

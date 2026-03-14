@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "composite": true,
+    "incremental": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "baseUrl": ".",
+    "paths": {
+      "@nous/types": ["packages/types/src/index.ts"],
+      "@nous/config": ["packages/config/src/index.ts"],
+      "@nous/config/services": ["packages/config/src/services.ts"],
+      "@nous/db": ["packages/db/src/index.ts"],
+      "@nous/booking-core": ["packages/booking-core/src/index.ts"],
+      "@nous/channel-core": ["packages/channel-core/src/index.ts"],
+      "@nous/ui": ["packages/ui/src/index.ts"]
+    }
+  }
+}
