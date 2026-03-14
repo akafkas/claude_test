@@ -1,0 +1,16 @@
+{
+  "name": "@nous/cms",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -b",
+    "dev": "npm run build -- --watch",
+    "start": "node dist/server.js",
+    "lint": "tsc -b --pretty false --noEmit",
+    "test": "node --test",
+    "clean": "rm -rf dist tsconfig.tsbuildinfo"
+  }
+}

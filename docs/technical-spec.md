@@ -33,18 +33,21 @@ repo/
 ## 3) Data model and collections
 
 ### Identity and tenancy
+
 - `users`
 - `organizations`
 - `memberships`
 - `properties`
 
 ### CMS content
+
 - `pages`
 - `offers`
 - `media` (Payload upload)
 - `siteSettings` (property-scoped)
 
 ### Inventory and pricing
+
 - `roomTypes`
 - `roomUnits`
 - `ratePlans`
@@ -55,6 +58,7 @@ repo/
 - `addOns`
 
 ### Reservations and payments
+
 - `guests`
 - `bookings`
 - `bookingGuests` (optional)
@@ -62,6 +66,7 @@ repo/
 - `bookingEvents` (audit)
 
 ### Channel sync
+
 - `channelAccounts`
 - `channelMappings`
 - `syncJobs`
@@ -87,6 +92,7 @@ repo/
 ## 5) API surface
 
 ### Public endpoints
+
 - `POST /api/public/search`
 - `POST /api/public/quote`
 - `POST /api/public/checkout`
@@ -96,6 +102,7 @@ repo/
 - `POST /api/public/booking/:bookingNumber/modify`
 
 ### Admin endpoints
+
 - `GET /api/admin/calendar`
 - `POST /api/admin/bookings/manual`
 - `PATCH /api/admin/bookings/:id`
@@ -105,6 +112,7 @@ repo/
 - `POST /api/admin/channels/:channel/retry/:jobId`
 
 ### Channel endpoints
+
 - `POST /api/channels/booking-com/webhook`
 - `POST /api/channels/airbnb/webhook`
 - `GET /api/channels/:channel/health`
@@ -125,29 +133,18 @@ export interface ChannelAdapter {
     to?: string;
   }): Promise<ExternalReservation[]>;
 
-  pushAvailability(args: {
-    propertyId: string;
-    updates: InventoryUpdate[];
-  }): Promise<SyncResult>;
+  pushAvailability(args: { propertyId: string; updates: InventoryUpdate[] }): Promise<SyncResult>;
 
-  pushRates(args: {
-    propertyId: string;
-    updates: RateUpdate[];
-  }): Promise<SyncResult>;
+  pushRates(args: { propertyId: string; updates: RateUpdate[] }): Promise<SyncResult>;
 
-  pushRestrictions(args: {
-    propertyId: string;
-    updates: RestrictionUpdate[];
-  }): Promise<SyncResult>;
+  pushRestrictions(args: { propertyId: string; updates: RestrictionUpdate[] }): Promise<SyncResult>;
 
   parseWebhook(args: {
     headers: Record<string, string>;
     body: unknown;
   }): Promise<ExternalWebhookEvent>;
 
-  acknowledgeWebhook?(args: {
-    eventId: string;
-  }): Promise<void>;
+  acknowledgeWebhook?(args: { eventId: string }): Promise<void>;
 }
 ```
 
@@ -167,6 +164,7 @@ export interface ChannelAdapter {
 ## 8) Booking integrity and concurrency
 
 ### Required controls
+
 - Transactional booking confirmation
 - Row-level lock on affected availability rows
 - Redis distributed lock per property/date-range during confirm
@@ -175,6 +173,7 @@ export interface ChannelAdapter {
 - Retry-safe background jobs
 
 ### Confirmation algorithm (high-level)
+
 1. Acquire Redis lock for property + date-range
 2. Start DB transaction
 3. Lock availability rows (`FOR UPDATE`)
@@ -197,6 +196,7 @@ export interface ChannelAdapter {
 ## 10) Environment variables
 
 ### Shared
+
 - `DATABASE_URL`
 - `REDIS_URL`
 - `S3_ENDPOINT`
@@ -211,6 +211,7 @@ export interface ChannelAdapter {
 - `NEXT_PUBLIC_APP_URL`
 
 ### Channels
+
 - `BOOKING_COM_API_KEY`
 - `BOOKING_COM_API_SECRET`
 - `AIRBNB_API_KEY`
@@ -227,6 +228,7 @@ export interface ChannelAdapter {
 ## 12) Explicit non-goals
 
 Do not build in MVP:
+
 - Full PMS
 - Housekeeping/accounting modules
 - Native mobile apps
