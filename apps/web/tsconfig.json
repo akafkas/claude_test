@@ -4,6 +4,6 @@
     "outDir": "dist",
     "rootDir": "src"
   },
-  "references": [{ "path": "../../packages/config" }],
+  "references": [{ "path": "../../packages/config" }, { "path": "../../packages/ui" }],
   "include": ["src"]
 }
